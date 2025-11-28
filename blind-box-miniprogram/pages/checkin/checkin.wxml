@@ -1,0 +1,142 @@
+ 
+<!--pages/checkin/checkin.wxml-->
+<view class="checkin-container">
+  <!-- 加载状态 -->
+  <van-loading wx:if="{{loading}}" type="spinner" vertical>加载中...</van-loading>
+
+  <!-- 签到页面内容 -->
+  <view wx:if="{{!loading}}" class="checkin-content">
+    
+    <!-- 用户信息区域 -->
+    <view class="user-section">
+      <view class="user-info">
+        <van-image src="{{userInfo.avatar}}" width="120rpx" height="120rpx" round />
+        <view class="user-details">
+          <text class="nickname">{{userInfo.nickname}}</text>
+          <text class="level">Lv.{{userInfo.level}}</text>
+        </view>
+      </view>
+      <view class="points-info">
+        <text class="points-value">{{userInfo.totalPoints}}</text>
+        <text class="points-label">积分</text>
+      </view>
+    </view>
+
+    <!-- 签到状态区域 -->
+    <view class="status-section">
+      <view class="status-card">
+        <view class="status-header">
+          <text class="status-title">签到状态</text>
+          <van-tag wx:if="{{checkinStatus.hasCheckedToday}}" type="success" size="small">已签到</van-tag>
+          <van-tag wx:else type="warning" size="small">未签到</van-tag>
+        </view>
+        
+        <view class="status-stats">
+          <view class="stat-item">
+            <text class="stat-value">{{checkinStatus.consecutiveDays}}</text>
+            <text class="stat-label">连续签到</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">{{checkinStatus.totalCheckinDays}}</text>
+            <text class="stat-label">累计签到</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">{{checkinStatus.todayPoints}}</text>
+            <text class="stat-label">今日可得</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 签到按钮区域 -->
+    <view class="checkin-section">
+      <view class="checkin-card">
+        <van-button 
+          wx:if="{{!checkinStatus.hasCheckedToday}}"
+          type="primary" 
+          size="large" 
+          round
+          loading="{{checkingIn}}"
+          bind:click="performCheckin"
+          class="checkin-btn">
+          {{checkingIn ? '签到中...' : '立即签到 +' + checkinStatus.todayPoints + '积分'}}
+        </van-button>
+        
+        <view wx:else class="checked-status">
+          <van-icon name="checked" color="#07c160" size="60rpx" />
+          <text class="checked-text">今日已签到</text>
+          <text class="checked-points">获得 {{checkinStatus.todayPoints}} 积分</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 签到奖励规则 -->
+    <view class="rewards-section">
+      <view class="section-header">
+        <text class="section-title">连续签到奖励</text>
+        <text class="view-rules" bind:tap="onViewRewards">查看规则</text>
+      </view>
+      
+      <view class="rewards-grid">
+        <view wx:for="{{rewardConfig}}" wx:key="day" class="reward-item {{checkinStatus.consecutiveDays >= item.day ? 'completed' : ''}} {{(checkinStatus.consecutiveDays % 7) + 1 === item.day ? 'current' : ''}}">
+          <view class="reward-day">第{{item.day}}天</view>
+          <view class="reward-content">
+            <text class="reward-points">{{item.points}}积分</text>
+            <text wx:if="{{item.extra}}" class="reward-extra">+{{item.extra.value}}</text>
+          </view>
+          <van-icon wx:if="{{checkinStatus.consecutiveDays >= item.day}}" name="success" color="#07c160" size="32rpx" class="reward-check" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 签到日历 -->
+    <view class="calendar-section">
+      <view class="section-header">
+        <text class="section-title">{{currentMonth}}签到记录</text>
+      </view>
+      
+      <view class="calendar-grid">
+        <view class="calendar-header">
+          <text class="week-day">一</text>
+          <text class="week-day">二</text>
+          <text class="week-day">三</text>
+          <text class="week-day">四</text>
+          <text class="week-day">五</text>
+          <text class="week-day">六</text>
+          <text class="week-day">日</text>
+        </view>
+        
+        <view class="calendar-body">
+          <view wx:for="{{calendar}}" wx:key="index" class="calendar-day {{item.isEmpty ? 'empty' : ''}} {{item.isToday ? 'today' : ''}} {{item.hasChecked ? 'checked' : ''}}">
+            <text wx:if="{{!item.isEmpty}}" class="day-number">{{item.day}}</text>
+            <van-icon wx:if="{{item.hasChecked}}" name="success" color="#07c160" size="24rpx" class="day-check" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮区域 -->
+    <view class="actions-section">
+      <van-button type="default" size="large" bind:click="onViewPointsHistory">积分记录</van-button>
+      <van-button type="primary" size="large" bind:click="onUsePoints">使用积分</van-button>
+    </view>
+  </view>
+
+  <!-- 签到成功动画弹窗 -->
+  <van-popup show="{{showCheckinAnimation}}" position="center" round bind:close="onCloseAnimation">
+    <view class="success-animation">
+      <view class="animation-content">
+        <van-icon name="success" color="#07c160" size="120rpx" class="success-icon" />
+        <text class="success-title">签到成功！</text>
+        <text class="success-points">获得 {{checkinAnimationData.points}} 积分</text>
+        <text wx:if="{{checkinAnimationData.extra}}" class="success-extra">额外获得：{{checkinAnimationData.extra.value}}</text>
+        <text class="success-consecutive">连续签到 {{checkinAnimationData.consecutiveDays}} 天</text>
+      </view>
+      
+      <view class="animation-actions">
+        <van-button type="primary" size="large" bind:click="onShareCheckin">分享签到</van-button>
+        <van-button type="default" size="large" bind:click="onCloseAnimation">关闭</van-button>
+      </view>
+    </view>
+  </van-popup>
+</view>

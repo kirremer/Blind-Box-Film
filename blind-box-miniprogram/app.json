@@ -1,0 +1,94 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/ranking/ranking", 
+    "pages/mall/mall",
+    "pages/inventory/inventory",
+    "pages/profile/profile",
+    "pages/blindbox-detail/blindbox-detail",
+    "pages/unbox/unbox",
+    "pages/login/login",
+    "pages/orders/orders",
+    "pages/order-detail/order-detail",
+    "pages/my-papers/my-papers",
+    "pages/checkin/checkin"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FF6B9D",
+    "navigationBarTitleText": "盲盒相纸",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8f8f8",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 50
+  },
+
+  "tabBar": {
+  "color": "#999999",
+  "selectedColor": "#FF6B9D",
+  "backgroundColor": "#ffffff",
+  "borderStyle": "white",
+  "position": "bottom",
+  "list": [
+    {
+      "pagePath": "pages/index/index",
+      "text": "首页"
+    },
+    {
+      "pagePath": "pages/ranking/ranking",
+      "text": "排行榜"
+    },
+    {
+      "pagePath": "pages/mall/mall",
+      "text": "商城"
+    },
+    {
+      "pagePath": "pages/inventory/inventory",
+      "text": "盲柜"
+    },
+    {
+      "pagePath": "pages/profile/profile",
+      "text": "我的"
+    }
+  ]
+},
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "requiredBackgroundModes": ["audio"],
+"usingComponents": {
+  "van-button": "./lib/vant-weapp/button/index",
+  "van-cell": "./lib/vant-weapp/cell/index",
+  "van-cell-group": "./lib/vant-weapp/cell-group/index",
+  "van-icon": "./lib/vant-weapp/icon/index",
+  "van-image": "./lib/vant-weapp/image/index",
+  "van-loading": "./lib/vant-weapp/loading/index",
+  "van-toast": "./lib/vant-weapp/toast/index",
+  "van-dialog": "./lib/vant-weapp/dialog/index",
+  "van-popup": "./lib/vant-weapp/popup/index",
+  "van-tag": "./lib/vant-weapp/tag/index",
+  "van-grid": "./lib/vant-weapp/grid/index",
+  "van-grid-item": "./lib/vant-weapp/grid-item/index",
+  "van-search": "./lib/vant-weapp/search/index",
+  "van-tabs": "./lib/vant-weapp/tabs/index",
+  "van-tab": "./lib/vant-weapp/tab/index",
+  "van-sticky": "./lib/vant-weapp/sticky/index",
+  "van-notice-bar": "./lib/vant-weapp/notice-bar/index",
+  "van-divider": "./lib/vant-weapp/divider/index",
+  "van-empty": "./lib/vant-weapp/empty/index",
+  "van-switch": "./lib/vant-weapp/switch/index",
+  "van-submit-bar": "./lib/vant-weapp/submit-bar/index",
+  "van-stepper": "./lib/vant-weapp/stepper/index",
+  "van-card": "./lib/vant-weapp/card/index",
+  "van-steps": "./lib/vant-weapp/steps/index"
+},
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

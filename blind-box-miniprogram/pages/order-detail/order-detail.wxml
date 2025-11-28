@@ -1,0 +1,128 @@
+<!--pages/order-detail/order-detail.wxml-->
+<view class="order-detail-container">
+  <!-- 加载状态 -->
+  <van-loading wx:if="{{loading}}" type="spinner" vertical>加载中...</van-loading>
+
+  <!-- 订单信息 -->
+  <view wx:if="{{!loading && orderInfo}}" class="order-content">
+    
+    <!-- 订单状态 -->
+    <view class="status-section">
+      <van-cell-group>
+        <van-cell center>
+          <view slot="title" class="status-info">
+            <van-icon name="{{statusConfig[orderInfo.status].icon}}" color="{{statusConfig[orderInfo.status].color}}" size="20px" />
+            <text class="status-text" style="color: {{statusConfig[orderInfo.status].color}}">{{statusConfig[orderInfo.status].text}}</text>
+          </view>
+          <view slot="value" class="order-actions">
+            <van-button wx:if="{{orderInfo.status === 'pending'}}" type="danger" size="small" bind:click="onCancelOrder">取消订单</van-button>
+            <van-button wx:if="{{orderInfo.status === 'shipped'}}" type="primary" size="small" bind:click="onConfirmReceive">确认收货</van-button>
+            <van-button wx:if="{{orderInfo.status === 'completed'}}" type="default" size="small" bind:click="onBuyAgain">再次购买</van-button>
+            <van-button type="default" size="small" bind:click="onContactService">联系客服</van-button>
+          </view>
+        </van-cell>
+      </van-cell-group>
+    </view>
+
+    <!-- 物流信息 -->
+    <view wx:if="{{showLogistics && logisticsInfo}}" class="logistics-section">
+      <van-cell-group title="物流信息">
+        <van-cell title="物流公司" value="{{logisticsInfo.company}}" />
+        <van-cell title="运单号码" value="{{logisticsInfo.trackingNo}}" is-link bind:click="onCopyTrackingNo" />
+      </van-cell-group>
+      
+      <!-- 物流轨迹 -->
+      <view class="logistics-track">
+        <van-steps direction="vertical" active="{{activeStep}}">
+          <van-step wx:for="{{logisticsSteps}}" wx:key="index">
+            <view class="step-content">
+              <view class="step-desc">{{item.desc}}</view>
+              <view class="step-time">{{item.time}}</view>
+            </view>
+          </van-step>
+        </van-steps>
+      </view>
+    </view>
+
+    <!-- 收货地址 -->
+    <view class="address-section">
+      <van-cell-group title="收货地址">
+        <van-cell>
+          <view class="address-info">
+            <view class="address-header">
+              <text class="name">{{orderInfo.address.name}}</text>
+              <text class="phone">{{orderInfo.address.phone}}</text>
+            </view>
+            <view class="address-detail">{{orderInfo.address.fullAddress}}</view>
+          </view>
+        </van-cell>
+      </van-cell-group>
+    </view>
+
+    <!-- 商品信息 -->
+    <view class="goods-section">
+      <van-cell-group title="商品信息">
+        <view wx:for="{{orderInfo.items}}" wx:key="id" class="goods-item">
+          <van-card
+            num="{{item.quantity}}"
+            price="{{item.price}}"
+            title="{{item.name}}"
+            thumb="{{item.image}}"
+            bind:click="onViewUnboxRecord"
+            data-item="{{item}}"
+          >
+            <view slot="footer">
+              <van-tag wx:if="{{item.type === 'blind_box'}}" type="primary" size="medium">盲盒</van-tag>
+              <van-tag wx:if="{{item.opened}}" type="success" size="medium">已开箱</van-tag>
+              <text class="item-total">小计: ¥{{item.totalPrice}}</text>
+            </view>
+          </van-card>
+          
+          <!-- 开箱结果 -->
+          <view wx:if="{{item.opened && item.openedItems}}" class="unbox-result">
+            <view class="unbox-title">开箱获得：</view>
+            <view class="unbox-items">
+              <view wx:for="{{item.openedItems}}" wx:for-item="paper" wx:key="index" class="paper-item">
+                <image class="paper-image" src="{{paper.image}}" mode="aspectFill" />
+                <view class="paper-info">
+                  <text class="paper-name">{{paper.name}}</text>
+                  <van-tag type="{{paper.rarity === 'rare' ? 'warning' : 'default'}}" size="small">{{paper.rarity === 'rare' ? '稀有' : '普通'}}</van-tag>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </van-cell-group>
+    </view>
+
+    <!-- 费用明细 -->
+    <view class="price-section">
+      <van-cell-group title="费用明细">
+        <van-cell title="商品金额" value="¥{{orderInfo.priceDetail.goodsAmount}}" />
+        <van-cell title="运费" value="¥{{orderInfo.priceDetail.shippingFee}}" />
+        <van-cell wx:if="{{orderInfo.priceDetail.discountAmount > 0}}" title="优惠金额" value="-¥{{orderInfo.priceDetail.discountAmount}}" />
+        <van-cell title="实付金额" value="¥{{orderInfo.priceDetail.totalAmount}}" value-class="total-amount" />
+      </van-cell-group>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="order-info-section">
+      <van-cell-group title="订单信息">
+        <van-cell title="订单编号" value="{{orderInfo.orderNo}}" is-link bind:click="onCopyOrderNo" />
+        <van-cell title="下单时间" value="{{orderInfo.createTime}}" />
+        <van-cell wx:if="{{orderInfo.payTime}}" title="付款时间" value="{{orderInfo.payTime}}" />
+        <van-cell wx:if="{{orderInfo.shipTime}}" title="发货时间" value="{{orderInfo.shipTime}}" />
+        <van-cell title="支付方式" value="{{orderInfo.paymentMethod}}" />
+      </van-cell-group>
+    </view>
+
+    <!-- 底部操作区 -->
+    <view class="bottom-actions">
+      <van-button wx:if="{{orderInfo.status === 'completed'}}" type="default" size="large" bind:click="onRefund">申请退款</van-button>
+      <van-button type="primary" size="large" bind:click="onBuyAgain">再次购买</van-button>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <van-empty wx:if="{{!loading && !orderInfo}}" description="订单不存在" />
+</view>

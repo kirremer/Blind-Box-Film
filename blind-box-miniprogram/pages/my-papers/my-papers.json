@@ -1,0 +1,10 @@
+ 
+{
+    "navigationBarTitleText": "我的相纸",
+    "navigationBarBackgroundColor": "#FF6B9D",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8f8f8",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 50
+  }

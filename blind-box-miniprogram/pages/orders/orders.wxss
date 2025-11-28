@@ -1,0 +1,330 @@
+/* pages/orders/orders.wxss */
+.orders-container {
+  min-height: 100vh;
+  background-color: #f8f8f8;
+  padding-bottom: 60rpx;
+}
+
+/* 工具栏 */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: white;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 30rpx;
+}
+
+.toolbar-icon {
+  color: #969799;
+}
+
+.select-btn, .cancel-btn {
+  font-size: 28rpx;
+  color: #FF6B9D;
+}
+
+/* 搜索栏 */
+.search-section {
+  padding: 20rpx 30rpx;
+  background: white;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+/* 状态筛选标签 */
+.status-tabs {
+  background: white;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+.tabs-scroll {
+  white-space: nowrap;
+}
+
+.tabs-container {
+  display: flex;
+  padding: 0 30rpx;
+  gap: 30rpx;
+}
+
+.status-tab {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 16rpx 0;
+  white-space: nowrap;
+  position: relative;
+}
+
+.status-tab.active .tab-name {
+  color: #FF6B9D;
+  font-weight: 600;
+}
+
+.status-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: #FF6B9D;
+  border-radius: 2rpx;
+}
+
+.tab-name {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.tab-count {
+  font-size: 20rpx;
+  background: #ee0a24;
+  color: white;
+  padding: 2rpx 8rpx;
+  border-radius: 10rpx;
+  min-width: 32rpx;
+  text-align: center;
+}
+
+/* 选择模式工具栏 */
+.select-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: #fff3cd;
+  border-bottom: 1rpx solid #ffeaa7;
+}
+
+.select-count {
+  font-size: 28rpx;
+  color: #e17055;
+}
+
+/* 订单列表 */
+.orders-list {
+  padding: 0 30rpx;
+}
+
+.order-item {
+  background: white;
+  border-radius: 16rpx;
+  margin: 20rpx 0;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.order-item.selected {
+  border: 2rpx solid #07c160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+/* 订单头部 */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24rpx;
+}
+
+.order-info {
+  flex: 1;
+}
+
+.order-no {
+  display: block;
+  font-size: 28rpx;
+  color: #323233;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.order-time {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.order-status {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.select-icon {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 4rpx;
+}
+
+/* 商品信息 */
+.order-goods {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.goods-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.goods-name {
+  display: block;
+  font-size: 28rpx;
+  color: #323233;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-detail {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.goods-amount {
+  text-align: right;
+}
+
+.amount-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #ee0a24;
+}
+
+/* 物流信息 */
+.logistics-info {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #ebedf0;
+  margin-bottom: 20rpx;
+}
+
+.logistics-text {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 订单操作 */
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #ebedf0;
+}
+
+.action-btn {
+  min-width: 120rpx;
+}
+
+/* 底部提示 */
+.load-more-tip {
+  text-align: center;
+  padding: 40rpx 0;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #c8c9cc;
+}
+
+/* 空状态样式 */
+.van-empty {
+  padding: 100rpx 0;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .tabs-container {
+    gap: 20rpx;
+  }
+  
+  .order-item {
+    padding: 24rpx;
+    margin: 16rpx 0;
+  }
+  
+  .order-actions {
+    flex-direction: column;
+    gap: 16rpx;
+  }
+  
+  .action-btn {
+    width: 100%;
+  }
+}
+
+/* 组件样式覆盖 */
+.van-button--small {
+  height: 56rpx !important;
+  line-height: 54rpx !important;
+  font-size: 24rpx !important;
+}
+
+.van-button--primary {
+  background: #FF6B9D !important;
+  border: 1rpx solid #FF6B9D !important;
+}
+
+.van-button--default {
+  background: #f7f8fa !important;
+  border: 1rpx solid #ebedf0 !important;
+  color: #646566 !important;
+}
+
+.van-tag {
+  border: none !important;
+}
+
+.van-search__content {
+  background-color: #f7f8fa !important;
+}
+
+/* 滑动效果 */
+.order-item:active {
+  transform: scale(0.98);
+}
+
+/* 状态指示器动画 */
+.order-status .van-tag {
+  animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* 新订单提示动画 */
+.order-item.new-order {
+  animation: newOrderGlow 1s ease-out;
+}
+
+@keyframes newOrderGlow {
+  0% {
+    box-shadow: 0 4rpx 12rpx rgba(255, 107, 157, 0.3);
+  }
+  50% {
+    box-shadow: 0 8rpx 24rpx rgba(255, 107, 157, 0.5);
+  }
+  100% {
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  }
+}

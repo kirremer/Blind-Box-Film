@@ -1,0 +1,435 @@
+/* pages/my-papers/my-papers.wxss */
+.my-papers-container {
+  min-height: 100vh;
+  background-color: #f8f8f8;
+}
+
+/* 统计信息区域 */
+.stats-section {
+  padding: 30rpx;
+  background: white;
+  margin-bottom: 20rpx;
+}
+
+.stats-card {
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E9E 100%);
+  border-radius: 20rpx;
+}
+
+.stats-item {
+  text-align: center;
+  color: white;
+}
+
+.stats-value {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.stats-label {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+/* 工具栏 */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: white;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 30rpx;
+}
+
+.toolbar-icon {
+  color: #969799;
+}
+
+.select-btn, .cancel-btn {
+  font-size: 28rpx;
+  color: #FF6B9D;
+}
+
+/* 搜索栏 */
+.search-section {
+  padding: 20rpx 30rpx;
+  background: white;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+/* 筛选标签 */
+.filter-section {
+  background: white;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+.filter-scroll {
+  white-space: nowrap;
+}
+
+.filter-tabs {
+  display: flex;
+  padding: 0 30rpx;
+  gap: 20rpx;
+}
+
+.filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 16rpx 24rpx;
+  border-radius: 32rpx;
+  background: #f7f8fa;
+  white-space: nowrap;
+}
+
+.filter-tab.active {
+  background: var(--tag-color, #FF6B9D);
+  color: white;
+}
+
+.tab-name {
+  font-size: 26rpx;
+}
+
+.tab-count {
+  font-size: 20rpx;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 2rpx 8rpx;
+  border-radius: 10rpx;
+}
+
+.filter-tab.active .tab-count {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 选择模式工具栏 */
+.select-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: #fff3cd;
+  border-bottom: 1rpx solid #ffeaa7;
+}
+
+.select-info {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.select-count {
+  font-size: 28rpx;
+  color: #e17055;
+}
+
+.select-all {
+  font-size: 26rpx;
+  color: #FF6B9D;
+}
+
+.select-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+/* 相纸列表 */
+.papers-list {
+  padding: 30rpx;
+}
+
+/* 网格模式 */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+}
+
+.grid-item {
+  background: white;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.grid-item.selected {
+  transform: scale(0.95);
+  border: 4rpx solid #07c160;
+}
+
+.paper-image-container {
+  position: relative;
+}
+
+.rarity-tag {
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+}
+
+.quantity-tag {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+}
+
+.new-tag {
+  position: absolute;
+  bottom: 8rpx;
+  right: 8rpx;
+}
+
+.select-indicator {
+  position: absolute;
+  bottom: 8rpx;
+  left: 8rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 8rpx;
+}
+
+.paper-info {
+  padding: 20rpx;
+}
+
+.paper-name {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #323233;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paper-series {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.paper-actions {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 8rpx;
+}
+
+/* 列表模式 */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx;
+  background: white;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.list-item.selected {
+  border: 2rpx solid #07c160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.list-image {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.quantity-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  background: #ee0a24;
+  color: white;
+  padding: 2rpx 8rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+}
+
+.list-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 8rpx;
+}
+
+.obtain-time {
+  font-size: 22rpx;
+  color: #c8c9cc;
+  margin-top: 8rpx;
+}
+
+.list-actions {
+  flex-shrink: 0;
+}
+
+/* 弹窗样式 */
+.sort-popup, .share-popup {
+  padding: 40rpx;
+  background: white;
+  border-radius: 20rpx 20rpx 0 0;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.sort-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.sort-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #ebedf0;
+}
+
+.sort-item.active {
+  color: #07c160;
+}
+
+.share-options {
+  display: flex;
+  justify-content: space-around;
+  padding: 40rpx 0;
+}
+
+.share-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.share-item text {
+  font-size: 24rpx;
+  color: #646566;
+}
+
+/* 详情弹窗 */
+.detail-popup {
+  padding: 40rpx;
+  background: white;
+  border-radius: 20rpx;
+  text-align: center;
+  max-width: 500rpx;
+}
+
+.detail-image {
+  margin-bottom: 30rpx;
+}
+
+.detail-info {
+  margin-bottom: 40rpx;
+}
+
+.detail-name {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+  margin-bottom: 12rpx;
+}
+
+.detail-series {
+  display: block;
+  font-size: 28rpx;
+  color: #969799;
+  margin-bottom: 20rpx;
+}
+
+.detail-tags {
+  display: flex;
+  justify-content: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.detail-time {
+  font-size: 24rpx;
+  color: #c8c9cc;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.detail-actions .van-button {
+  flex: 1;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-card {
+    padding: 20rpx;
+  }
+  
+  .stats-value {
+    font-size: 36rpx;
+  }
+}
+
+/* 自定义组件样式覆盖 */
+.van-empty {
+  padding: 100rpx 0;
+}
+
+.van-tag {
+  border: none !important;
+}
+
+.van-search__content {
+  background-color: #f7f8fa !important;
+}

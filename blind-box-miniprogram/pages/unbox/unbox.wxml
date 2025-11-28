@@ -1,0 +1,209 @@
+ 
+<!--pages/unbox/unbox.wxml-->
+<view class="unbox-container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; height: {{navigationBarHeight}}px;">
+    <view class="navbar-content">
+      <van-icon name="arrow-left" size="24px" color="white" bind:click="onBackHome" />
+      <text class="navbar-title">开箱体验</text>
+      <van-icon name="{{audioEnabled ? 'volume-o' : 'volume-o'}}" size="24px" color="white" bind:click="onToggleAudio" />
+    </view>
+  </view>
+
+  <!-- 背景粒子 -->
+  <view class="particle-container">
+    <view 
+      wx:for="{{particles}}" 
+      wx:key="id"
+      class="particle"
+      style="left: {{item.x}}%; top: {{item.y}}%; width: {{item.size}}px; height: {{item.size}}px; opacity: {{item.opacity}};">
+    </view>
+  </view>
+
+  <!-- 开箱准备状态 -->
+  <view wx:if="{{unboxStatus === 'ready'}}" class="ready-container">
+    <view class="box-preview">
+      <view class="box-container" animation="{{boxAnimation}}">
+        <van-image src="/images/mystery-box.png" width="200rpx" height="200rpx" />
+        <view class="box-glow"></view>
+      </view>
+      
+      <view class="box-info">
+        <text class="box-title">神秘盲盒</text>
+        <text class="box-subtitle">{{quantity}} 个待开启</text>
+        <text class="box-tip">点击下方按钮开始开箱</text>
+      </view>
+    </view>
+
+    <view class="start-action">
+      <van-button 
+        type="primary" 
+        size="large" 
+        round
+        bind:click="startUnbox"
+        class="start-btn">
+        <van-icon name="gift-o" size="20px" />
+        开始开箱
+      </van-button>
+    </view>
+  </view>
+
+  <!-- 开箱进行中 -->
+  <view wx:if="{{unboxStatus === 'opening'}}" class="opening-container">
+    <view class="opening-box" animation="{{boxAnimation}}">
+      <van-image src="/images/mystery-box.png" width="300rpx" height="300rpx" />
+      <view class="opening-effects">
+        <view class="ripple ripple-1"></view>
+        <view class="ripple ripple-2"></view>
+        <view class="ripple ripple-3"></view>
+      </view>
+    </view>
+    
+    <view class="opening-text">
+      <text class="opening-title">正在开箱...</text>
+      <text class="opening-subtitle">期待你的惊喜</text>
+    </view>
+  </view>
+
+  <!-- 开箱结果展示 -->
+  <view wx:if="{{unboxStatus === 'opened'}}" class="result-container">
+    <view class="result-header">
+      <text class="result-progress">{{currentBox}} / {{quantity}}</text>
+      <text class="result-title">开箱结果</text>
+    </view>
+
+    <view class="result-card" animation="{{resultAnimation}}">
+      <!-- 稀有度光效 -->
+      <view wx:if="{{currentResult.rarity !== 'common'}}" class="rarity-glow" 
+        style="box-shadow: 0 0 60rpx {{glowColor}}, 0 0 120rpx {{glowColor}};"
+        animation="{{glowAnimation}}">
+      </view>
+
+      <view class="result-image">
+        <van-image src="{{currentResult.image}}" width="400rpx" height="400rpx" radius="20rpx" />
+        <!-- 新获得标识 -->
+        <view wx:if="{{currentResult.isNew}}" class="new-badge">
+          <van-tag type="danger" size="small">NEW</van-tag>
+        </view>
+      </view>
+
+      <view class="result-info">
+        <view class="result-name">{{currentResult.name}}</view>
+        <view class="result-rarity">
+          <van-tag 
+            type="default" 
+            size="medium"
+            style="background-color: {{rarityConfig[currentResult.rarity].color}}; color: white;">
+            {{rarityConfig[currentResult.rarity].name}}
+          </van-tag>
+        </view>
+        <view class="result-series">{{currentResult.seriesName}}</view>
+        <view class="result-description">{{currentResult.description}}</view>
+      </view>
+    </view>
+
+    <!-- 继续开箱按钮 -->
+    <view wx:if="{{canContinue && currentBox < quantity}}" class="continue-action">
+      <van-button 
+        type="primary" 
+        size="large" 
+        round
+        bind:click="onContinueUnbox"
+        class="continue-btn">
+        继续开箱 ({{quantity - currentBox}} 个剩余)
+      </van-button>
+    </view>
+  </view>
+
+  <!-- 开箱完成汇总 -->
+  <view wx:if="{{unboxStatus === 'sharing'}}" class="summary-container">
+    <view class="summary-header">
+      <text class="summary-title">开箱完成！</text>
+      <text class="summary-subtitle">本次开箱汇总</text>
+    </view>
+
+    <view class="summary-stats">
+      <view class="stat-item">
+        <text class="stat-value">{{summary.total}}</text>
+        <text class="stat-label">总数量</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{summary.newCount}}</text>
+        <text class="stat-label">新获得</text>
+      </view>
+      <view class="stat-item" wx:if="{{summary.rare > 0}}">
+        <text class="stat-value" style="color: {{rarityConfig.rare.color}}">{{summary.rare}}</text>
+        <text class="stat-label">稀有</text>
+      </view>
+      <view class="stat-item" wx:if="{{summary.epic > 0}}">
+        <text class="stat-value" style="color: {{rarityConfig.epic.color}}">{{summary.epic}}</text>
+        <text class="stat-label">史诗</text>
+      </view>
+      <view class="stat-item" wx:if="{{summary.legendary > 0}}">
+        <text class="stat-value" style="color: {{rarityConfig.legendary.color}}">{{summary.legendary}}</text>
+        <text class="stat-label">传说</text>
+      </view>
+    </view>
+
+    <!-- 开箱结果预览 -->
+    <view class="result-preview">
+      <scroll-view class="preview-scroll" scroll-x>
+        <view class="preview-list">
+          <view 
+            wx:for="{{unboxResults}}" 
+            wx:key="id"
+            class="preview-item">
+            <van-image src="{{item.image}}" width="120rpx" height="120rpx" radius="12rpx" />
+            <van-tag 
+              type="default" 
+              size="mini"
+              style="background-color: {{rarityConfig[item.rarity].color}}; color: white;">
+              {{rarityConfig[item.rarity].name}}
+            </van-tag>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="summary-actions">
+      <van-button type="default" size="large" bind:click="onShareResult" class="action-btn">
+        <van-icon name="share-o" size="18px" />
+        分享结果
+      </van-button>
+      <van-button type="default" size="large" bind:click="onViewMyPapers" class="action-btn">
+        <van-icon name="photo-o" size="18px" />
+        查看收藏
+      </van-button>
+      <van-button type="primary" size="large" bind:click="onUnboxAgain" class="action-btn">
+        <van-icon name="gift-o" size="18px" />
+        再次开箱
+      </van-button>
+    </view>
+  </view>
+
+  <!-- 分享弹窗 -->
+  <van-popup show="{{showShareModal}}" position="bottom" round bind:close="onCloseShareModal">
+    <view class="share-popup">
+      <view class="popup-header">
+        <text class="popup-title">分享开箱结果</text>
+        <van-icon name="cross" bind:click="onCloseShareModal" />
+      </view>
+      
+      <view class="share-options">
+        <view class="share-item" bind:tap="onShareToWechat">
+          <van-icon name="wechat" size="40px" color="#07c160" />
+          <text>微信好友</text>
+        </view>
+        <view class="share-item" bind:tap="onShareToWechat">
+          <van-icon name="friends-o" size="40px" color="#FF6B9D" />
+          <text>朋友圈</text>
+        </view>
+        <view class="share-item" bind:tap="onSaveResult">
+          <van-icon name="photograph" size="40px" color="#1989fa" />
+          <text>保存图片</text>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+</view>

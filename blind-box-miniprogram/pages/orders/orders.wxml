@@ -1,0 +1,139 @@
+ 
+<!--pages/orders/orders.wxml-->
+<view class="orders-container">
+  <!-- 加载状态 -->
+  <van-loading wx:if="{{loading}}" type="spinner" vertical>加载中...</van-loading>
+
+  <!-- 页面内容 -->
+  <view wx:if="{{!loading}}" class="orders-content">
+    
+    <!-- 工具栏 -->
+    <view class="toolbar">
+      <view class="toolbar-left">
+        <van-icon name="search" size="20px" bind:click="onToggleSearch" class="toolbar-icon" />
+      </view>
+      <view class="toolbar-right">
+        <text wx:if="{{!selectMode}}" class="select-btn" bind:tap="onToggleSelectMode">管理</text>
+        <text wx:else class="cancel-btn" bind:tap="onToggleSelectMode">取消</text>
+      </view>
+    </view>
+
+    <!-- 搜索栏 -->
+    <view wx:if="{{showSearchBar}}" class="search-section">
+      <van-search
+        value="{{searchKeyword}}"
+        placeholder="搜索订单号或商品名称"
+        show-action
+        bind:change="onSearchInput"
+        bind:clear="onSearchClear"
+      />
+    </view>
+
+    <!-- 状态筛选标签 -->
+    <view class="status-tabs">
+      <scroll-view class="tabs-scroll" scroll-x>
+        <view class="tabs-container">
+          <view 
+            wx:for="{{statusTabs}}" 
+            wx:key="key"
+            class="status-tab {{activeStatus === item.key ? 'active' : ''}}"
+            bind:tap="onStatusChange"
+            data-status="{{item.key}}">
+            <text class="tab-name">{{item.name}}</text>
+            <text wx:if="{{item.count > 0}}" class="tab-count">{{item.count}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 选择模式工具栏 -->
+    <view wx:if="{{selectMode}}" class="select-toolbar">
+      <view class="select-info">
+        <text class="select-count">已选择 {{selectedOrders.length}} 个订单</text>
+      </view>
+      <view class="select-actions">
+        <van-button type="danger" size="small" bind:click="onBatchDelete">删除</van-button>
+      </view>
+    </view>
+
+    <!-- 订单列表 -->
+    <view class="orders-list">
+      <view 
+        wx:for="{{filteredOrders}}" 
+        wx:key="id"
+        class="order-item {{item.isSelected ? 'selected' : ''}}"
+        bind:tap="onOrderTap"
+        data-order="{{item}}">
+        
+        <!-- 订单头部 -->
+        <view class="order-header">
+          <view class="order-info">
+            <text class="order-no">订单号：{{item.orderNo}}</text>
+            <text class="order-time">{{item.createTime.split('T')[0]}}</text>
+          </view>
+          <view class="order-status">
+            <van-tag 
+              type="default" 
+              size="small"
+              color="{{statusConfig[item.status].color}}">
+              {{statusConfig[item.status].text}}
+            </van-tag>
+            <!-- 选择状态 -->
+            <van-icon wx:if="{{selectMode}}" 
+              name="{{item.isSelected ? 'success' : 'circle'}}" 
+              color="{{item.isSelected ? '#07c160' : '#ddd'}}" 
+              size="20px" />
+          </view>
+        </view>
+
+        <!-- 商品信息 -->
+        <view class="order-goods">
+          <van-image src="{{item.coverItem.image}}" width="120rpx" height="120rpx" radius="12rpx" />
+          <view class="goods-info">
+            <text class="goods-name">{{item.coverItem.name}}</text>
+            <text class="goods-detail">
+              {{item.coverItem.type === 'blind_box' ? '盲盒' : '普通商品'}} × {{item.coverItem.quantity}}
+              {{item.itemCount > 1 ? '等' + item.itemCount + '件商品' : ''}}
+            </text>
+          </view>
+          <view class="goods-amount">
+            <text class="amount-text">¥{{item.totalAmount}}</text>
+          </view>
+        </view>
+
+        <!-- 物流信息 -->
+        <view wx:if="{{item.tracking}}" class="logistics-info">
+          <van-icon name="logistics" size="16px" color="#969799" />
+          <text class="logistics-text">{{item.tracking.company}} {{item.tracking.trackingNo}}</text>
+        </view>
+
+        <!-- 订单操作 -->
+        <view wx:if="{{!selectMode && item.actions.length > 0}}" class="order-actions">
+          <van-button 
+            wx:for="{{item.actions}}" 
+            wx:for-item="action"
+            wx:key="key"
+            type="{{action.type}}" 
+            size="small"
+            bind:click="onOrderAction"
+            data-action="{{action}}"
+            data-order="{{item}}"
+            class="action-btn">
+            {{action.text}}
+          </van-button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <van-empty 
+      wx:if="{{filteredOrders.length === 0 && !loading}}" 
+      description="{{searchKeyword ? '没有找到相关订单' : '暂无订单'}}"
+      image="search" />
+  </view>
+
+  <!-- 底部提示 -->
+  <view wx:if="{{!hasMore && filteredOrders.length > 0}}" class="load-more-tip">
+    <text class="tip-text">已显示全部订单</text>
+  </view>
+</view>

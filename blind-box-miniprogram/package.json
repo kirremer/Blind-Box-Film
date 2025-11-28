@@ -1,0 +1,16 @@
+{
+  "name": "blind-box-miniprogram",
+  "version": "1.0.0",
+  "description": "盲盒相纸小程序",
+  "main": "app.js",
+  "dependencies": {
+    "@vant/weapp": "^1.11.6",
+    "vant-weapp": "^0.5.29"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

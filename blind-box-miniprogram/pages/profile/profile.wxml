@@ -1,0 +1,119 @@
+ 
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-info">
+      <view class="avatar-section" bind:tap="onAvatarTap">
+        <van-image
+          width="120rpx"
+          height="120rpx"
+          radius="60rpx"
+          src="{{ userInfo.avatar || 'https://via.placeholder.com/100x100/CCCCCC/ffffff?text=头像' }}"
+          fit="cover"
+        />
+        <view class="level-badge" wx:if="{{ userInfo.level }}">
+          <van-tag type="warning" size="mini">LV{{ userInfo.level }}</van-tag>
+        </view>
+      </view>
+      <view class="user-details">
+        <view class="nickname">{{ userInfo.nickname || '点击登录' }}</view>
+        <view class="user-id" wx:if="{{ userInfo.id }}">ID: {{ userInfo.id }}</view>
+        <view class="login-tip" wx:else bind:tap="onLoginTap">点击登录获取更多功能</view>
+      </view>
+    </view>
+    
+    <!-- 积分和优惠券 -->
+    <view class="user-stats">
+      <view class="stat-item" bind:tap="onPointsTap">
+        <view class="stat-value">{{ userInfo.points || 0 }}</view>
+        <view class="stat-label">积分</view>
+      </view>
+      <view class="stat-item" bind:tap="onCouponsTap">
+        <view class="stat-value">{{ userInfo.coupons || 0 }}</view>
+        <view class="stat-label">优惠券</view>
+      </view>
+      <view class="stat-item" bind:tap="onCollectionTap">
+        <view class="stat-value">{{ userInfo.collections || 0 }}</view>
+        <view class="stat-label">收藏</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷功能 -->
+  <view class="quick-actions">
+    <van-grid column-num="4" border="{{ false }}">
+      <van-grid-item
+        wx:for="{{ quickActions }}"
+        wx:key="id"
+        icon="{{ item.icon }}"
+        text="{{ item.name }}"
+        bind:click="onQuickActionTap"
+        data-action="{{ item }}"
+      />
+    </van-grid>
+  </view>
+
+  <!-- 订单管理 -->
+  <view class="section">
+    <van-cell-group>
+      <van-cell
+        title="我的订单"
+        is-link
+        bind:click="onOrdersTap"
+        icon="orders-o"
+        value="查看全部"
+      />
+    </van-cell-group>
+    
+    <view class="order-tabs">
+      <view 
+        class="order-tab"
+        wx:for="{{ orderTabs }}"
+        wx:key="status"
+        bind:tap="onOrderTabTap"
+        data-status="{{ item.status }}"
+      >
+        <van-icon name="{{ item.icon }}" size="40rpx" />
+        <text>{{ item.name }}</text>
+        <view class="badge" wx:if="{{ item.count > 0 }}">{{ item.count }}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="section">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{ menuItems }}"
+        wx:key="id"
+        title="{{ item.title }}"
+        icon="{{ item.icon }}"
+        is-link
+        bind:click="onMenuTap"
+        data-item="{{ item }}"
+      />
+    </van-cell-group>
+  </view>
+
+  <!-- 设置和帮助 -->
+  <view class="section">
+    <van-cell-group>
+      <van-cell title="设置" icon="setting-o" is-link bind:click="onSettingsTap" />
+      <van-cell title="帮助与反馈" icon="question-o" is-link bind:click="onHelpTap" />
+      <van-cell title="关于我们" icon="info-o" is-link bind:click="onAboutTap" />
+    </van-cell-group>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-section" wx:if="{{ userInfo.id }}">
+    <van-button
+      type="default"
+      size="large"
+      bind:click="onLogoutTap"
+      custom-class="logout-btn"
+    >
+      退出登录
+    </van-button>
+  </view>
+</view>

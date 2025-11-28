@@ -1,0 +1,170 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部渐变背景区域 -->
+  <view class="header-section gradient-bg">
+    <!-- 标题和设置按钮 -->
+    <view class="header-top">
+      <view class="title">盲盒盒机</view>
+      <view class="header-actions">
+        <van-icon name="ellipsis" size="20" color="white" bind:click="onMoreClick" />
+        <van-icon name="scan" size="20" color="white" bind:click="onScanClick" />
+      </view>
+    </view>
+
+    <!-- 烟花装饰 -->
+    <view class="fireworks">
+      <van-icon class="firework firework-1" name="fire-o" size="30px" color="#FFD700" />
+      <van-icon class="firework firework-2" name="fire-o" size="25px" color="#FF69B4" />
+      <van-icon class="firework firework-3" name="fire-o" size="20px" color="#87CEEB" />
+    </view>
+
+    <!-- 公告栏 -->
+    <view class="notice-section">
+      <van-notice-bar
+        left-icon="volume-o"
+        text="{{noticeText}}"
+        background="rgba(255, 255, 255, 0.2)"
+        color="white"
+        wrapable
+      />
+    </view>
+
+    <!-- 分类导航 -->
+    <view class="category-grid">
+      <view 
+        class="category-item hover-scale" 
+        wx:for="{{categories}}" 
+        wx:key="id"
+        bind:tap="onCategoryTap"
+        data-category="{{item}}"
+      >
+        <view class="category-icon">
+          <image src="{{item.icon}}" mode="aspectFit" />
+        </view>
+        <view class="category-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 爬楼新玩法推广卡片 -->
+  <view class="promotion-card card slide-up" wx:if="{{showPromotion}}">
+    <view class="promotion-content">
+      <view class="promotion-text">
+        <view class="promotion-title">爬楼新玩法，新乐趣</view>
+        <view class="promotion-subtitle">快来爬楼吧</view>
+      </view>
+      <view class="promotion-mascot">
+        <van-icon name="smile-o" size="60px" color="#FF6B9D" />
+      </view>
+    </view>
+    <van-icon name="cross" class="close-btn" bind:click="closePromotion" />
+  </view>
+
+  <!-- 无限宝藏区域 -->
+  <view class="treasure-section">
+    <view class="section-header">
+      <view class="section-title">
+        <van-icon name="star" color="#FF6B9D" />
+        <text>无限宝藏</text>
+      </view>
+      <view class="more-link" bind:tap="onMoreTreasure">
+        <text>查看更多</text>
+        <van-icon name="arrow" />
+      </view>
+    </view>
+
+    <!-- 商品网格 -->
+    <view class="product-grid">
+      <view 
+        class="product-item card hover-scale" 
+        wx:for="{{treasureProducts}}" 
+        wx:key="id"
+        bind:tap="onProductTap"
+        data-product="{{item}}"
+      >
+        <view class="product-image">
+          <image src="{{item.cover_image || '/images/default-product.png'}}" mode="aspectFill" />
+          <view class="product-badge" wx:if="{{item.badge}}">{{item.badge}}</view>
+        </view>
+        <view class="product-info">
+          <view class="product-name">{{item.name}}</view>
+          <view class="product-price">
+            <text class="currency">¥</text>
+            <text class="amount">{{item.price}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门推荐轮播 -->
+  <view class="swiper-section" wx:if="{{banners.length > 0}}">
+    <swiper 
+      autoplay="{{true}}" 
+      interval="3000" 
+      circular="{{true}}"
+      indicator-dots="{{true}}"
+      indicator-color="rgba(255,255,255,0.5)"
+      indicator-active-color="#FF6B9D"
+      class="banner-swiper">
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-item" bind:tap="onBannerTap" data-banner="{{item}}">
+          <image src="{{item.image}}" mode="aspectFill" />
+          <view class="banner-overlay">
+            <view class="banner-title">{{item.title}}</view>
+            <view class="banner-subtitle">{{item.subtitle}}</view>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 盲盒系列推荐 -->
+  <view class="series-section">
+    <view class="section-header">
+      <view class="section-title">
+        <van-icon name="gift" color="#FF6B9D" />
+        <text>热门盲盒</text>
+      </view>
+      <view class="more-link" bind:tap="onMoreSeries">
+        <text>查看更多</text>
+        <van-icon name="arrow" />
+      </view>
+    </view>
+
+    <!-- 盲盒系列列表 -->
+    <scroll-view class="series-scroll" scroll-x>
+      <view class="series-list">
+        <view 
+          class="series-item card-large hover-scale" 
+          wx:for="{{blindBoxSeries}}" 
+          wx:key="id"
+          bind:tap="onSeriesTap"
+          data-series="{{item}}"
+        >
+          <view class="series-image">
+            <image src="{{item.cover_image || '/images/default-blindbox.png'}}" mode="aspectFill" />
+            <view class="series-tag">{{item.theme}}</view>
+          </view>
+          <view class="series-info">
+            <view class="series-name">{{item.name}}</view>
+            <view class="series-desc">{{item.description}}</view>
+            <view class="series-price">
+              <text class="currency">¥</text>
+              <text class="amount">{{item.price}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view class="safe-area-bottom"></view>
+</view>
+
+<!-- Toast 组件 -->
+<van-toast id="van-toast" />
+
+<!-- Dialog 组件 -->
+<van-dialog id="van-dialog" />

@@ -1,0 +1,409 @@
+/* pages/checkin/checkin.wxss */
+.checkin-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E9E 100%);
+  padding: 30rpx;
+}
+
+/* 用户信息区域 */
+.user-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40rpx;
+  border-radius: 24rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 157, 0.3);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.nickname {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.level {
+  font-size: 24rpx;
+  color: #FF6B9D;
+  background: rgba(255, 107, 157, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.points-info {
+  text-align: center;
+}
+
+.points-value {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #FF6B9D;
+  margin-bottom: 8rpx;
+}
+
+.points-label {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 签到状态区域 */
+.status-section {
+  margin-bottom: 30rpx;
+}
+
+.status-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 157, 0.3);
+}
+
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.status-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.status-stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #FF6B9D;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 签到按钮区域 */
+.checkin-section {
+  margin-bottom: 30rpx;
+}
+
+.checkin-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 60rpx 40rpx;
+  border-radius: 24rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 157, 0.3);
+}
+
+.checkin-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #FF6B9D, #FF8E9E) !important;
+  border: none !important;
+  box-shadow: 0 8rpx 24rpx rgba(255, 107, 157, 0.4);
+}
+
+.checked-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.checked-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #07c160;
+}
+
+.checked-points {
+  font-size: 28rpx;
+  color: #969799;
+}
+
+/* 奖励规则区域 */
+.rewards-section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40rpx;
+  border-radius: 24rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 157, 0.3);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.view-rules {
+  font-size: 24rpx;
+  color: #FF6B9D;
+}
+
+.rewards-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.reward-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 16rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #f2f3f5;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.reward-item.current {
+  border-color: #FF6B9D;
+  background: rgba(255, 107, 157, 0.05);
+}
+
+.reward-item.completed {
+  background: rgba(7, 193, 96, 0.05);
+  border-color: #07c160;
+}
+
+.reward-day {
+  font-size: 24rpx;
+  color: #969799;
+  margin-bottom: 12rpx;
+}
+
+.reward-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.reward-points {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.reward-extra {
+  font-size: 20rpx;
+  color: #FF6B9D;
+}
+
+.reward-check {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+}
+
+/* 签到日历 */
+.calendar-section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40rpx;
+  border-radius: 24rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 157, 0.3);
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.week-day {
+  text-align: center;
+  font-size: 24rpx;
+  color: #969799;
+  padding: 16rpx 0;
+}
+
+.calendar-body {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16rpx;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+  position: relative;
+  font-size: 28rpx;
+}
+
+.calendar-day.empty {
+  opacity: 0;
+}
+
+.calendar-day.today {
+  background: rgba(255, 107, 157, 0.1);
+  color: #FF6B9D;
+  font-weight: 600;
+}
+
+.calendar-day.checked {
+  background: rgba(7, 193, 96, 0.1);
+  color: #07c160;
+}
+
+.day-check {
+  position: absolute;
+  top: 4rpx;
+  right: 4rpx;
+}
+
+/* 操作按钮区域 */
+.actions-section {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 60rpx;
+}
+
+.actions-section .van-button {
+  flex: 1;
+}
+
+/* 签到成功动画 */
+.success-animation {
+  padding: 60rpx 40rpx;
+  text-align: center;
+  background: white;
+  border-radius: 24rpx;
+  min-width: 500rpx;
+}
+
+.animation-content {
+  margin-bottom: 50rpx;
+}
+
+.success-icon {
+  margin-bottom: 30rpx;
+  animation: bounceIn 0.8s ease;
+}
+
+.success-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #323233;
+  margin-bottom: 20rpx;
+}
+
+.success-points {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #FF6B9D;
+  margin-bottom: 12rpx;
+}
+
+.success-extra {
+  display: block;
+  font-size: 28rpx;
+  color: #07c160;
+  margin-bottom: 12rpx;
+}
+
+.success-consecutive {
+  display: block;
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.animation-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.animation-actions .van-button {
+  flex: 1;
+}
+
+/* 动画效果 */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .rewards-grid {
+    flex-wrap: wrap;
+  }
+  
+  .reward-item {
+    min-width: 140rpx;
+  }
+  
+  .actions-section {
+    flex-direction: column;
+  }
+  
+  .success-animation {
+    min-width: 400rpx;
+  }
+}
+
+/* 自定义组件样式覆盖 */
+.van-button--primary {
+  background: linear-gradient(90deg, #FF6B9D, #FF8E9E) !important;
+  border: none !important;
+}
+
+.van-tag--success {
+  background-color: rgba(7, 193, 96, 0.1) !important;
+  color: #07c160 !important;
+}
+
+.van-tag--warning {
+  background-color: rgba(255, 149, 0, 0.1) !important;
+  color: #ff9500 !important;
+}

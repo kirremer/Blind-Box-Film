@@ -1,0 +1,256 @@
+<!--pages/my-papers/my-papers.wxml-->
+<view class="my-papers-container">
+  <!-- 加载状态 -->
+  <van-loading wx:if="{{loading}}" type="spinner" vertical>加载中...</van-loading>
+
+  <!-- 页面内容 -->
+  <view wx:if="{{!loading}}" class="papers-content">
+    
+    <!-- 统计信息区域 -->
+    <view class="stats-section">
+      <view class="stats-card">
+        <view class="stats-item">
+          <text class="stats-value">{{totalCount}}</text>
+          <text class="stats-label">收集数量</text>
+        </view>
+        <view class="stats-item">
+          <text class="stats-value">{{collectionRate}}%</text>
+          <text class="stats-label">收集率</text>
+        </view>
+        <view class="stats-item">
+          <text class="stats-value">{{filteredPapers.length}}</text>
+          <text class="stats-label">当前显示</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 工具栏 -->
+    <view class="toolbar">
+      <view class="toolbar-left">
+        <van-icon name="search" size="20px" bind:click="onToggleSearch" class="toolbar-icon" />
+        <van-icon name="{{viewMode === 'grid' ? 'apps-o' : 'bars'}}" size="20px" bind:click="onToggleViewMode" class="toolbar-icon" />
+        <van-icon name="sort" size="20px" bind:click="onShowSortPopup" class="toolbar-icon" />
+      </view>
+      <view class="toolbar-right">
+        <text wx:if="{{!selectMode}}" class="select-btn" bind:tap="onToggleSelectMode">选择</text>
+        <text wx:else class="cancel-btn" bind:tap="onToggleSelectMode">取消</text>
+      </view>
+    </view>
+
+    <!-- 搜索栏 -->
+    <view wx:if="{{showSearchBar}}" class="search-section">
+      <van-search
+        value="{{searchKeyword}}"
+        placeholder="搜索相纸名称或系列"
+        show-action
+        bind:change="onSearchInput"
+        bind:clear="onSearchClear"
+      />
+    </view>
+
+    <!-- 筛选标签 -->
+    <view class="filter-section">
+      <scroll-view class="filter-scroll" scroll-x>
+        <view class="filter-tabs">
+          <view 
+            wx:for="{{filterTabs}}" 
+            wx:key="key"
+            class="filter-tab {{activeFilter === item.key ? 'active' : ''}}"
+            bind:tap="onFilterChange"
+            data-filter="{{item.key}}"
+            style="{{item.color ? '--tag-color: ' + item.color : ''}}">
+            <text class="tab-name">{{item.name}}</text>
+            <text class="tab-count">{{item.count}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 选择模式工具栏 -->
+    <view wx:if="{{selectMode}}" class="select-toolbar">
+      <view class="select-info">
+        <text class="select-count">已选择 {{selectedPapers.length}} 项</text>
+        <text class="select-all" bind:tap="onSelectAll">
+          {{selectedPapers.length === filteredPapers.length ? '取消全选' : '全选'}}
+        </text>
+      </view>
+      <view class="select-actions">
+        <van-button type="default" size="small" bind:click="onBatchShare">分享</van-button>
+        <van-button type="danger" size="small" bind:click="onBatchDelete">删除</van-button>
+      </view>
+    </view>
+
+    <!-- 相纸列表 -->
+    <view class="papers-list {{viewMode === 'list' ? 'list-mode' : 'grid-mode'}}">
+      <!-- 网格模式 -->
+      <view wx:if="{{viewMode === 'grid'}}" class="grid-container">
+        <view 
+          wx:for="{{filteredPapers}}" 
+          wx:key="id"
+          class="paper-item grid-item {{item.isSelected ? 'selected' : ''}}"
+          bind:tap="onPaperTap"
+          data-paper="{{item}}">
+          
+          <view class="paper-image-container">
+            <van-image src="{{item.image}}" fit="cover" width="100%" height="200rpx" radius="12rpx" />
+            
+            <!-- 稀有度标签 -->
+            <van-tag 
+              type="primary" 
+              size="mini" 
+              class="rarity-tag">
+              {{item.rarity}}
+            </van-tag>
+            
+            <!-- 数量标签 -->
+            <view wx:if="{{item.quantity > 1}}" class="quantity-tag">×{{item.quantity}}</view>
+            
+            <!-- 新获得标签 -->
+            <van-tag wx:if="{{item.isNew}}" type="danger" size="mini" class="new-tag">新</van-tag>
+            
+            <!-- 选择状态 -->
+            <view wx:if="{{selectMode}}" class="select-indicator">
+                <van-icon 
+                name="{{item.isSelected ? 'success' : 'circle'}}" 
+                color="{{item.isSelected ? '#07c160' : '#ddd'}}" 
+                size="20px" />
+            </view>
+          </view>
+          
+          <view class="paper-info">
+            <text class="paper-name">{{item.name}}</text>
+            <text class="paper-series">{{item.seriesName}}</text>
+          </view>
+          
+          <!-- 操作按钮 -->
+          <view wx:if="{{!selectMode}}" class="paper-actions">
+            <van-icon name="share-o" size="16px" bind:tap="onShareSingle" data-paper="{{item}}" />
+          </view>
+        </view>
+      </view>
+
+      <!-- 列表模式 -->
+      <view wx:if="{{viewMode === 'list'}}" class="list-container">
+        <view 
+          wx:for="{{filteredPapers}}" 
+          wx:key="id"
+          class="paper-item list-item {{item.isSelected ? 'selected' : ''}}"
+          bind:tap="onPaperTap"
+          data-paper="{{item}}">
+          
+          <view class="list-image">
+            <van-image src="{{item.image}}" fit="cover" width="120rpx" height="120rpx" radius="12rpx" />
+            <view wx:if="{{item.quantity > 1}}" class="quantity-badge">×{{item.quantity}}</view>
+          </view>
+          
+          <view class="list-content">
+            <view class="list-header">
+              <text class="paper-name">{{item.name}}</text>
+                <van-tag 
+                type="primary" 
+                size="mini">
+                {{item.rarity}}
+                </van-tag>
+            </view>
+            <text class="paper-series">{{item.seriesName}}</text>
+            <text class="obtain-time">获得时间：{{item.obtainDate}}</text>
+          </view>
+          
+          <view class="list-actions">
+                <van-icon wx:if="{{selectMode}}" 
+                name="{{item.isSelected ? 'success' : 'circle'}}" 
+                color="{{item.isSelected ? '#07c160' : '#ddd'}}" 
+                size="24px" />
+            <van-icon wx:else name="share-o" size="20px" bind:tap="onShareSingle" data-paper="{{item}}" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <van-empty wx:if="{{filteredPapers.length === 0 && !loading}}" 
+      description="{{searchKeyword ? '没有找到相关相纸' : '还没有收集到相纸'}}" />
+  </view>
+
+  <!-- 排序弹窗 -->
+  <van-popup show="{{showSortPopup}}" position="bottom" round bind:close="onHideSortPopup">
+    <view class="sort-popup">
+      <view class="popup-header">
+        <text class="popup-title">排序方式</text>
+        <van-icon name="cross" bind:click="onHideSortPopup" />
+      </view>
+      <view class="sort-options">
+        <view class="sort-item {{sortType === 'time' && sortOrder === 'desc' ? 'active' : ''}}" 
+          bind:tap="onSortChange" data-sort-type="time" data-sort-order="desc">
+          <text>最新获得</text>
+          <van-icon wx:if="{{sortType === 'time' && sortOrder === 'desc'}}" name="success" color="#07c160" />
+        </view>
+        <view class="sort-item {{sortType === 'time' && sortOrder === 'asc' ? 'active' : ''}}" 
+          bind:tap="onSortChange" data-sort-type="time" data-sort-order="asc">
+          <text>最早获得</text>
+          <van-icon wx:if="{{sortType === 'time' && sortOrder === 'asc'}}" name="success" color="#07c160" />
+        </view>
+        <view class="sort-item {{sortType === 'rarity' && sortOrder === 'desc' ? 'active' : ''}}" 
+          bind:tap="onSortChange" data-sort-type="rarity" data-sort-order="desc">
+          <text>稀有度高</text>
+          <van-icon wx:if="{{sortType === 'rarity' && sortOrder === 'desc'}}" name="success" color="#07c160" />
+        </view>
+        <view class="sort-item {{sortType === 'name' && sortOrder === 'asc' ? 'active' : ''}}" 
+          bind:tap="onSortChange" data-sort-type="name" data-sort-order="asc">
+          <text>名称排序</text>
+          <van-icon wx:if="{{sortType === 'name' && sortOrder === 'asc'}}" name="success" color="#07c160" />
+        </view>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 相纸详情弹窗 -->
+  <van-popup show="{{showDetailPopup}}" position="center" round bind:close="onCloseDetailPopup">
+    <view wx:if="{{selectedPaper}}" class="detail-popup">
+      <view class="detail-image">
+        <van-image src="{{selectedPaper.image}}" fit="cover" width="300rpx" height="300rpx" radius="12rpx" />
+      </view>
+      <view class="detail-info">
+        <text class="detail-name">{{selectedPaper.name}}</text>
+        <text class="detail-series">{{selectedPaper.seriesName}}</text>
+        <view class="detail-tags">
+          <van-tag 
+            type="primary" 
+            size="small">
+            {{selectedPaper.rarity}}
+          </van-tag>
+          <van-tag wx:if="{{selectedPaper.quantity > 1}}" type="primary" size="small">×{{selectedPaper.quantity}}</van-tag>
+        </view>
+        <text class="detail-time">获得时间：{{selectedPaper.obtainDate}}</text>
+      </view>
+      <view class="detail-actions">
+        <van-button type="default" size="large" bind:click="onShareSingle" data-paper="{{selectedPaper}}">分享</van-button>
+        <van-button type="primary" size="large" bind:click="onCloseDetailPopup">关闭</van-button>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 分享弹窗 -->
+  <van-popup show="{{showSharePopup}}" position="bottom" round bind:close="onHideSharePopup">
+    <view class="share-popup">
+      <view class="popup-header">
+        <text class="popup-title">分享到</text>
+        <van-icon name="cross" bind:click="onHideSharePopup" />
+      </view>
+      <view class="share-options">
+        <view class="share-item" bind:tap="onShareToFriend">
+          <van-icon name="wechat" size="40px" color="#07c160" />
+          <text>微信好友</text>
+        </view>
+        <view class="share-item" bind:tap="onShareToMoments">
+          <van-icon name="friends-o" size="40px" color="#FF6B9D" />
+          <text>朋友圈</text>
+        </view>
+        <view class="share-item" bind:tap="onSaveToAlbum">
+          <van-icon name="photograph" size="40px" color="#1989fa" />
+          <text>保存图片</text>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+</view>

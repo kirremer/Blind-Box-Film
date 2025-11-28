@@ -1,0 +1,216 @@
+/* pages/order-detail/order-detail.wxss */
+.order-detail-container {
+  min-height: 100vh;
+  background-color: #f8f8f8;
+  padding-bottom: 120rpx;
+}
+
+/* 订单状态 */
+.status-section {
+  margin-bottom: 20rpx;
+}
+
+.status-info {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.status-text {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.order-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+/* 物流信息 */
+.logistics-section {
+  margin-bottom: 20rpx;
+}
+
+.logistics-track {
+  padding: 30rpx;
+  background: white;
+}
+
+.step-content {
+  padding-left: 20rpx;
+}
+
+.step-desc {
+  font-size: 28rpx;
+  color: #323233;
+  margin-bottom: 8rpx;
+}
+
+.step-time {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 收货地址 */
+.address-section {
+  margin-bottom: 20rpx;
+}
+
+.address-info {
+  padding: 20rpx 0;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+  margin-bottom: 16rpx;
+}
+
+.name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.phone {
+  font-size: 28rpx;
+  color: #969799;
+}
+
+.address-detail {
+  font-size: 28rpx;
+  color: #646566;
+  line-height: 1.5;
+}
+
+/* 商品信息 */
+.goods-section {
+  margin-bottom: 20rpx;
+}
+
+.goods-item {
+  margin-bottom: 20rpx;
+  background: white;
+}
+
+.item-total {
+  font-size: 28rpx;
+  color: #ee0a24;
+  margin-left: 20rpx;
+}
+
+/* 开箱结果 */
+.unbox-result {
+  padding: 30rpx;
+  background: #f7f8fa;
+  border-top: 1rpx solid #ebedf0;
+}
+
+.unbox-title {
+  font-size: 28rpx;
+  color: #323233;
+  margin-bottom: 20rpx;
+}
+
+.unbox-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.paper-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx;
+  background: white;
+  border-radius: 12rpx;
+  flex: 1;
+  min-width: 300rpx;
+}
+
+.paper-image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+}
+
+.paper-info {
+  flex: 1;
+}
+
+.paper-name {
+  display: block;
+  font-size: 26rpx;
+  color: #323233;
+  margin-bottom: 8rpx;
+}
+
+/* 费用明细 */
+.price-section {
+  margin-bottom: 20rpx;
+}
+
+.total-amount {
+  color: #ee0a24 !important;
+  font-weight: 600 !important;
+  font-size: 32rpx !important;
+}
+
+/* 订单信息 */
+.order-info-section {
+  margin-bottom: 20rpx;
+}
+
+/* 底部操作 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 30rpx;
+  border-top: 1rpx solid #ebedf0;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.bottom-actions .van-button {
+  flex: 1;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .order-actions {
+    flex-direction: column;
+    gap: 10rpx;
+  }
+  
+  .paper-item {
+    min-width: 100%;
+  }
+  
+  .bottom-actions {
+    flex-direction: column;
+  }
+}
+
+/* 自定义组件样式覆盖 */
+.van-card__thumb {
+  border-radius: 12rpx !important;
+}
+
+.van-cell-group__title {
+  font-weight: 600 !important;
+  color: #323233 !important;
+}
+
+.van-step__circle {
+  background-color: #1989fa !important;
+}
+
+.van-step__line {
+  background-color: #ebedf0 !important;
+}

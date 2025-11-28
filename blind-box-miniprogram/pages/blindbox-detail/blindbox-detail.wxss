@@ -1,0 +1,370 @@
+ 
+/* pages/blindbox-detail/blindbox-detail.wxss */
+.blindbox-detail-container {
+  min-height: 100vh;
+  background-color: #f8f8f8;
+  padding-bottom: 140rpx;
+}
+
+/* 轮播图 */
+.swiper-section {
+  position: relative;
+  background: white;
+  margin-bottom: 20rpx;
+}
+
+.swiper-indicator {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+/* 基本信息 */
+.info-section {
+  background: white;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.series-header {
+  margin-bottom: 30rpx;
+}
+
+.series-title {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.series-name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.series-stats {
+  display: flex;
+  gap: 30rpx;
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 价格区域 */
+.price-section {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.current-price {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #ee0a24;
+}
+
+.original-price {
+  font-size: 28rpx;
+  color: #969799;
+  text-decoration: line-through;
+}
+
+/* 收集进度 */
+.collection-progress {
+  margin-top: 30rpx;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.progress-title {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.progress-detail {
+  font-size: 24rpx;
+  color: #1989fa;
+}
+
+.progress-bar {
+  height: 8rpx;
+  background: #f2f3f5;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1989fa, #07c160);
+  transition: width 0.3s ease;
+}
+
+/* 标签页内容 */
+.tab-content {
+  padding: 30rpx;
+  background: white;
+  margin: 20rpx 0;
+}
+
+/* 描述区域 */
+.description-section {
+  margin-bottom: 40rpx;
+}
+
+.description-text {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #646566;
+}
+
+/* 稀有度说明 */
+.rarity-section {
+  margin-top: 40rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+  margin-bottom: 24rpx;
+}
+
+.rarity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.rarity-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.rarity-probability {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 相纸预览 */
+.paper-item {
+  position: relative;
+  text-align: center;
+}
+
+.paper-info {
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.paper-name {
+  font-size: 24rpx;
+  color: #323233;
+}
+
+.paper-probability {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+}
+
+/* 统计区域 */
+.stats-section {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40rpx;
+  padding: 30rpx;
+  background: #f7f8fa;
+  border-radius: 12rpx;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1989fa;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+/* 操作按钮 */
+.action-section {
+  background: white;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-buttons .van-button {
+  flex: 1;
+}
+
+/* 底部购买栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 20rpx 30rpx;
+  border-top: 1rpx solid #ebedf0;
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.quantity-section {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.quantity-label {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.buy-buttons {
+  flex: 1;
+  display: flex;
+  gap: 20rpx;
+}
+
+.buy-buttons .van-button {
+  flex: 1;
+}
+
+/* 购买弹窗 */
+.buy-popup {
+  padding: 30rpx;
+  background: white;
+  border-radius: 20rpx 20rpx 0 0;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.popup-content {
+  margin-bottom: 40rpx;
+}
+
+.buy-item {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 20rpx 0;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  display: block;
+  font-size: 28rpx;
+  color: #323233;
+  margin-bottom: 8rpx;
+}
+
+.item-price {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.total-label {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.total-price {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #ee0a24;
+}
+
+.popup-footer .van-button {
+  width: 100%;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .bottom-bar {
+    flex-direction: column;
+    gap: 20rpx;
+    padding: 30rpx;
+  }
+  
+  .quantity-section {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .buy-buttons {
+    width: 100%;
+  }
+}
+
+/* 自定义组件样式覆盖 */
+.van-tabs__nav {
+  background-color: white !important;
+}
+
+.van-tab {
+  font-weight: 500 !important;
+}
+
+.van-tab--active {
+  color: #1989fa !important;
+}
+
+.van-grid-item__content {
+  padding: 0 !important;
+}

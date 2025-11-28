@@ -1,0 +1,111 @@
+ 
+<!--pages/ranking/ranking.wxml-->
+<view class="container">
+  <!-- 排行榜标签 -->
+  <view class="tabs-section">
+    <van-tabs active="{{ activeTab }}" bind:change="onTabChange" color="#FF6B9D">
+      <van-tab title="收藏榜" name="collection"></van-tab>
+      <van-tab title="开箱榜" name="unbox"></van-tab>
+      <van-tab title="积分榜" name="points"></van-tab>
+      <van-tab title="消费榜" name="spending"></van-tab>
+    </van-tabs>
+  </view>
+
+  <!-- 我的排名 -->
+  <view class="my-rank-section">
+    <view class="my-rank-card">
+      <view class="rank-info">
+        <view class="rank-number">{{ myRank.rank || '--' }}</view>
+        <view class="rank-label">我的排名</view>
+      </view>
+      <view class="user-info">
+        <van-image
+          width="80rpx"
+          height="80rpx"
+          radius="40rpx"
+          src="{{ myRank.avatar || '/images/default-avatar.png' }}"
+          fit="cover"
+        />
+        <view class="user-details">
+          <view class="nickname">{{ myRank.nickname || '未登录' }}</view>
+          <view class="score">{{ getRankValue(myRank) }}</view>
+        </view>
+      </view>
+      <view class="rank-trend" wx:if="{{ myRank.trend }}">
+        <van-icon 
+          name="{{ myRank.trend > 0 ? 'arrow-up' : 'arrow-down' }}" 
+          color="{{ myRank.trend > 0 ? '#07c160' : '#ee0a24' }}"
+        />
+        <text class="{{ myRank.trend > 0 ? 'trend-up' : 'trend-down' }}">
+          {{ Math.abs(myRank.trend) }}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 排行榜列表 -->
+  <view class="ranking-list">
+    <!-- 前三名特殊显示 -->
+    <view class="top-three" wx:if="{{ rankingList.length >= 3 }}">
+      <view 
+        class="top-item top-{{ index + 1 }}"
+        wx:for="{{ rankingList.slice(0, 3) }}"
+        wx:key="id"
+        wx:for-index="index"
+      >
+        <view class="medal">
+          <image src="/images/medal/medal-{{ index + 1 }}.png" mode="aspectFit" />
+        </view>
+        <van-image
+          width="100rpx"
+          height="100rpx"
+          radius="50rpx"
+          src="{{ item.avatar || '/images/default-avatar.png' }}"
+          fit="cover"
+        />
+        <view class="user-name">{{ item.nickname }}</view>
+        <view class="user-score">{{ getRankValue(item) }}</view>
+      </view>
+    </view>
+
+    <!-- 其他排名 -->
+    <view class="other-ranks">
+      <view 
+        class="rank-item"
+        wx:for="{{ rankingList.slice(3) }}"
+        wx:key="id"
+        wx:for-index="index"
+      >
+        <view class="rank-number">{{ index + 4 }}</view>
+        <van-image
+          width="80rpx"
+          height="80rpx"
+          radius="40rpx"
+          src="{{ item.avatar || '/images/default-avatar.png' }}"
+          fit="cover"
+        />
+        <view class="user-info">
+          <view class="nickname">{{ item.nickname }}</view>
+          <view class="user-level" wx:if="{{ item.level }}">LV{{ item.level }}</view>
+        </view>
+        <view class="score">{{ getRankValue(item) }}</view>
+        <view class="rank-change" wx:if="{{ item.change }}">
+          <van-icon 
+            name="{{ item.change > 0 ? 'arrow-up' : item.change < 0 ? 'arrow-down' : 'minus' }}"
+            color="{{ item.change > 0 ? '#07c160' : item.change < 0 ? '#ee0a24' : '#969799' }}"
+            size="24rpx"
+          />
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{ loadingMore }}">
+      <van-loading type="spinner" />
+      <text>加载中...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <van-empty wx:if="{{ !rankingList.length && !loading }}" description="暂无排行数据" />
+  </view>
+</view>

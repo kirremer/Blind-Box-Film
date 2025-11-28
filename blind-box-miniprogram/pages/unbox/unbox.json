@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "开箱",
+  "navigationBarBackgroundColor": "#FF6B9D",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#000000",
+  "backgroundTextStyle": "light",
+  "navigationStyle": "custom"
+}

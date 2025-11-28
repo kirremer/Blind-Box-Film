@@ -1,0 +1,189 @@
+ 
+<!--pages/blindbox-detail/blindbox-detail.wxml-->
+<view class="blindbox-detail-container">
+  <!-- 加载状态 -->
+  <van-loading wx:if="{{loading}}" type="spinner" vertical>加载中...</van-loading>
+
+  <!-- 盲盒详情内容 -->
+  <view wx:if="{{!loading && seriesInfo}}" class="detail-content">
+    
+    <!-- 轮播图 -->
+    <view class="swiper-section">
+      <swiper 
+        autoplay="{{true}}" 
+        interval="3000" 
+        circular="{{true}}"
+        indicator-dots="{{true}}"
+        indicator-color="rgba(255,255,255,0.3)"
+        indicator-active-color="#FF6B9D"
+        bind:change="onSwiperChange"
+        class="cover-swiper">
+        <swiper-item wx:for="{{seriesInfo.coverImages}}" wx:key="index">
+          <van-image src="{{item}}" fit="cover" width="100%" height="400rpx" />
+        </swiper-item>
+      </swiper>
+      <view class="swiper-indicator">
+        {{swiperCurrent + 1}} / {{seriesInfo.coverImages.length}}
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="info-section">
+      <view class="series-header">
+        <view class="series-title">
+          <text class="series-name">{{seriesInfo.name}}</text>
+          <van-tag type="primary" size="small">{{seriesInfo.theme}}</van-tag>
+        </view>
+        <view class="series-stats">
+          <text class="sold-count">已售 {{seriesInfo.soldCount}} 个</text>
+          <text class="total-papers">共 {{seriesInfo.totalPapers}} 款</text>
+        </view>
+      </view>
+      
+      <view class="price-section">
+        <view class="current-price">¥{{seriesInfo.price}}</view>
+        <view wx:if="{{seriesInfo.originalPrice > seriesInfo.price}}" class="original-price">¥{{seriesInfo.originalPrice}}</view>
+        <van-tag wx:if="{{seriesInfo.activity}}" type="danger" size="small">{{seriesInfo.activity.title}}</van-tag>
+      </view>
+
+      <!-- 用户收集进度 -->
+      <view class="collection-progress">
+        <view class="progress-header">
+          <text class="progress-title">我的收集进度</text>
+          <text class="progress-detail" bind:tap="onViewCollection">{{userStats.collectedPapers}}/{{userStats.totalPapers}} 已收集</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{(userStats.collectedPapers / userStats.totalPapers) * 100}}%"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标签页 -->
+    <van-tabs active="{{activeTab}}" bind:change="onTabChange" sticky>
+      <van-tab title="系列介绍">
+        <view class="tab-content">
+          <view class="description-section">
+            <text class="description-text">{{seriesInfo.description}}</text>
+          </view>
+          
+          <!-- 稀有度说明 -->
+          <view class="rarity-section">
+            <view class="section-title">稀有度说明</view>
+            <view class="rarity-list">
+              <view wx:for="{{seriesInfo.rarityConfig}}" wx:for-item="rarity" wx:key="index" class="rarity-item">
+                <van-tag type="default" color="{{rarity.color}}" size="small">{{rarity.name}}</van-tag>
+                <text class="rarity-probability">出现概率: {{rarity.probability}}%</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </van-tab>
+
+      <van-tab title="相纸预览">
+        <view class="tab-content">
+          <van-grid column-num="3" gutter="20">
+            <van-grid-item wx:for="{{photoPapers}}" wx:key="id" bind:click="onViewPaper" data-paper="{{item}}">
+              <view class="paper-item">
+                <van-image src="{{item.image}}" fit="cover" width="100%" height="200rpx" radius="12rpx" />
+                <view class="paper-info">
+                  <text class="paper-name">{{item.name}}</text>
+                  <van-tag 
+                    type="primary" 
+                    size="mini" 
+                    class="rarity-tag">
+                    {{item.rarity}}
+                  </van-tag>
+                </view>
+                <view class="paper-probability">{{item.probability}}%</view>
+              </view>
+            </van-grid-item>
+          </van-grid>
+        </view>
+      </van-tab>
+
+      <van-tab title="开箱记录">
+        <view class="tab-content">
+          <view class="stats-section">
+            <view class="stat-item">
+              <text class="stat-value">{{userStats.totalBoxes}}</text>
+              <text class="stat-label">已开盲盒</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-value">{{userStats.collectedPapers}}</text>
+              <text class="stat-label">已收集</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-value">{{completionRate}}%</text>
+              <text class="stat-label">完成度</text>
+            </view>
+          </view>
+          
+          <view class="action-buttons">
+            <van-button type="default" size="small" bind:click="onViewCollection">查看收藏</van-button>
+            <van-button type="primary" size="small" bind:click="onViewUnboxHistory">开箱记录</van-button>
+          </view>
+        </view>
+      </van-tab>
+    </van-tabs>
+
+    <!-- 操作按钮 -->
+    <view class="action-section">
+      <view class="action-buttons">
+        <van-button icon="share-o" type="default" bind:click="onShareBox">分享</van-button>
+        <van-button icon="question-o" type="default" bind:click="onViewRules">规则</van-button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部购买栏 -->
+  <view wx:if="{{!loading && seriesInfo}}" class="bottom-bar">
+    <view class="quantity-section">
+      <text class="quantity-label">数量</text>
+      <van-stepper value="{{quantity}}" min="1" max="10" bind:change="onQuantityChange" />
+    </view>
+    <view class="buy-buttons">
+      <van-button type="warning" size="large" bind:click="onAddToCart">加购物车</van-button>
+      <van-button type="primary" size="large" bind:click="onShowBuyPopup">立即购买</van-button>
+    </view>
+  </view>
+
+  <!-- 购买弹窗 -->
+  <van-popup show="{{showBuyPopup}}" position="bottom" round bind:close="onHideBuyPopup">
+    <view class="buy-popup">
+      <view class="popup-header">
+        <text class="popup-title">确认购买</text>
+        <van-icon name="cross" bind:click="onHideBuyPopup" />
+      </view>
+      
+      <view class="popup-content">
+        <view class="buy-item">
+          <van-image src="{{seriesInfo.coverImages[0]}}" width="120rpx" height="120rpx" radius="12rpx" />
+          <view class="item-info">
+            <text class="item-name">{{seriesInfo.name}}</text>
+            <text class="item-price">¥{{seriesInfo.price}} × {{quantity}}</text>
+          </view>
+        </view>
+        
+        <van-divider />
+        
+        <view class="total-section">
+          <text class="total-label">合计：</text>
+          <text class="total-price">¥{{seriesInfo.price * quantity}}</text>
+        </view>
+      </view>
+      
+      <view class="popup-footer">
+        <van-button 
+          type="primary" 
+          size="large" 
+          loading="{{buying}}" 
+          bind:click="onBuyNow">
+          {{buying ? '购买中...' : '确认购买'}}
+        </van-button>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 空状态 -->
+  <van-empty wx:if="{{!loading && !seriesInfo}}" description="盲盒系列不存在" />
+</view>

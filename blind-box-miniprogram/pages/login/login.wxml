@@ -1,0 +1,171 @@
+ 
+<!--pages/login/login.wxml-->
+<view class="login-container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <van-icon name="arrow-left" size="24px" color="white" bind:click="onBack" wx:if="{{!isFromTab}}" />
+    <text class="nav-title">登录</text>
+  </view>
+
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="bg-circle circle-1"></view>
+    <view class="bg-circle circle-2"></view>
+    <view class="bg-circle circle-3"></view>
+  </view>
+
+  <!-- Logo区域 -->
+  <view class="logo-section">
+    <view class="logo-container {{logoAnimation ? 'animate' : ''}}">
+      <van-image src="/images/logo.png" width="120rpx" height="120rpx" />
+      <text class="app-name">盲盒相纸</text>
+      <text class="app-slogan">发现生活中的小惊喜</text>
+    </view>
+  </view>
+
+  <!-- 登录表单区域 -->
+  <view class="login-form">
+    <!-- 微信登录 -->
+    <view wx:if="{{loginType === 'wechat'}}" class="wechat-login">
+      <view class="login-title">
+        <text class="title-main">欢迎回来</text>
+        <text class="title-sub">使用微信快速登录</text>
+      </view>
+      
+      <van-button 
+        type="primary" 
+        size="large" 
+        round
+        loading="{{loginLoading}}"
+        bind:click="onWechatLogin"
+        class="wechat-login-btn">
+        <van-icon name="wechat" size="20px" />
+        {{loginLoading ? '登录中...' : '微信一键登录'}}
+      </van-button>
+    </view>
+
+    <!-- 手机号登录 -->
+    <view wx:if="{{loginType === 'phone'}}" class="phone-login">
+      <view class="login-title">
+        <text class="title-main">手机号登录</text>
+        <text class="title-sub">请输入手机号和验证码</text>
+      </view>
+      
+      <view class="form-group">
+        <van-field
+          value="{{phoneNumber}}"
+          placeholder="请输入手机号"
+          border="{{false}}"
+          input-align="center"
+          maxlength="11"
+          type="number"
+          bind:change="onPhoneInput"
+          class="phone-input"
+        />
+      </view>
+      
+      <view class="form-group">
+        <van-field
+          value="{{verificationCode}}"
+          placeholder="请输入验证码"
+          border="{{false}}"
+          input-align="center"
+          maxlength="6"
+          type="number"
+          bind:change="onCodeInput"
+          class="code-input"
+        >
+          <van-button 
+            slot="button" 
+            size="small" 
+            type="primary"
+            loading="{{codeLoading}}"
+            disabled="{{countdown > 0}}"
+            bind:click="onSendCode">
+            {{countdown > 0 ? countdown + 's' : (codeLoading ? '发送中' : '获取验证码')}}
+          </van-button>
+        </van-field>
+      </view>
+      
+      <van-button 
+        type="primary" 
+        size="large" 
+        round
+        loading="{{loginLoading}}"
+        bind:click="onPhoneLogin"
+        class="phone-login-btn">
+        {{loginLoading ? '登录中...' : '登录'}}
+      </van-button>
+    </view>
+
+    <!-- 登录方式切换 -->
+    <view class="login-switch">
+      <text class="switch-text" bind:tap="onSwitchLoginType">
+        {{loginType === 'wechat' ? '使用手机号登录' : '使用微信登录'}}
+      </text>
+    </view>
+
+    <!-- 用户协议 -->
+    <view class="agreement-section">
+      <van-checkbox value="{{agreedToTerms}}" bind:change="onAgreeChange" class="agreement-checkbox">
+        <text class="agreement-text">
+          我已阅读并同意
+          <text class="agreement-link" bind:tap="onViewTerms">《用户协议》</text>
+          和
+          <text class="agreement-link" bind:tap="onViewPrivacy">《隐私政策》</text>
+        </text>
+      </van-checkbox>
+    </view>
+
+    <!-- 其他登录选项 -->
+    <view class="other-options">
+      <text class="guest-mode" bind:tap="onGuestMode">游客模式</text>
+    </view>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="bottom-decoration">
+    <text class="copyright">© 2024 盲盒相纸 版权所有</text>
+  </view>
+
+  <!-- 用户协议弹窗 -->
+  <van-popup show="{{showTermsDialog}}" position="center" round bind:close="onCloseTermsDialog">
+    <view class="terms-dialog">
+      <view class="dialog-header">
+        <text class="dialog-title">用户协议</text>
+        <van-icon name="cross" size="20px" bind:click="onCloseTermsDialog" />
+      </view>
+      
+      <scroll-view class="dialog-content" scroll-y>
+        <text class="terms-content">
+          欢迎使用盲盒相纸小程序！
+
+          1. 服务条款
+          本协议是您与盲盒相纸之间关于使用盲盒相纸服务的法律协议。
+
+          2. 用户行为规范
+          - 不得发布违法违规内容
+          - 不得恶意刷单或作弊
+          - 保护账号安全，不得转让账号
+
+          3. 隐私保护
+          我们承诺保护您的个人隐私，详见《隐私政策》。
+
+          4. 免责声明
+          在法律允许的范围内，我们对服务中断、数据丢失等不承担责任。
+
+          5. 协议变更
+          我们有权随时修改本协议，修改后的协议将在应用内公布。
+
+          如有疑问，请联系客服。
+        </text>
+      </scroll-view>
+      
+      <view class="dialog-footer">
+        <van-button type="primary" size="large" bind:click="onCloseTermsDialog">
+          我已了解
+        </van-button>
+      </view>
+    </view>
+  </van-popup>
+</view>

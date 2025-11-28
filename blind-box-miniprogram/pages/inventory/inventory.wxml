@@ -1,0 +1,147 @@
+ 
+<!--pages/inventory/inventory.wxml-->
+<view class="container">
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <view class="stat-item">
+        <view class="stat-value">{{ stats.total || 0 }}</view>
+        <view class="stat-label">总收藏</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{ stats.rare || 0 }}</view>
+        <view class="stat-label">稀有</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{ stats.series || 0 }}</view>
+        <view class="stat-label">系列</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{ stats.value || 0 }}</view>
+        <view class="stat-label">总价值</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <view class="tabs-section">
+    <van-tabs active="{{ activeTab }}" bind:change="onTabChange" color="#FF6B9D">
+      <van-tab title="全部" name="all"></van-tab>
+      <van-tab title="相纸" name="photo"></van-tab>
+      <van-tab title="盲盒" name="blindbox"></van-tab>
+      <van-tab title="稀有" name="rare"></van-tab>
+    </van-tabs>
+  </view>
+
+  <!-- 收藏列表 -->
+  <view class="inventory-list">
+    <view class="inventory-grid">
+      <view 
+        class="inventory-item"
+        wx:for="{{ inventoryList }}"
+        wx:key="id"
+        bind:tap="onItemTap"
+        data-item="{{ item }}"
+      >
+        <view class="item-image">
+          <van-image
+            width="100%"
+            height="240rpx"
+            src="{{ item.image || '/images/default-item.png' }}"
+            fit="cover"
+            radius="12rpx"
+          />
+          <view class="rarity-badge rarity-{{ item.rarity }}">{{ item.rarityText }}</view>
+          <view class="count-badge" wx:if="{{ item.count > 1 }}">x{{ item.count }}</view>
+        </view>
+        <view class="item-info">
+          <view class="item-name">{{ item.name }}</view>
+          <view class="item-series">{{ item.series }}</view>
+          <view class="item-value">价值 ¥{{ item.value }}</view>
+          <view class="item-date">{{ item.obtainDate }}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{ loadingMore }}">
+      <van-loading type="spinner" />
+      <text>加载中...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <van-empty wx:if="{{ !inventoryList.length && !loading }}" description="还没有收藏任何物品">
+      <van-button 
+        type="primary" 
+        size="small" 
+        bind:click="goToMall"
+        custom-class="empty-btn"
+      >
+        去商城看看
+      </van-button>
+    </van-empty>
+  </view>
+
+  <!-- 物品详情弹窗 -->
+  <van-popup 
+    show="{{ showDetail }}" 
+    position="bottom" 
+    round 
+    bind:close="closeDetail"
+    custom-style="height: 70%"
+  >
+    <view class="detail-popup" wx:if="{{ selectedItem }}">
+      <view class="detail-header">
+        <view class="detail-title">{{ selectedItem.name }}</view>
+        <van-icon name="cross" bind:click="closeDetail" />
+      </view>
+      
+      <view class="detail-content">
+        <view class="detail-image">
+          <van-image
+            width="300rpx"
+            height="300rpx"
+            src="{{ selectedItem.image }}"
+            fit="cover"
+            radius="16rpx"
+          />
+          <view class="rarity-badge rarity-{{ selectedItem.rarity }}">
+            {{ selectedItem.rarityText }}
+          </view>
+        </view>
+        
+        <view class="detail-info">
+          <view class="info-row">
+            <text class="label">系列：</text>
+            <text class="value">{{ selectedItem.series }}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">稀有度：</text>
+            <text class="value">{{ selectedItem.rarityText }}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">获得时间：</text>
+            <text class="value">{{ selectedItem.obtainDate }}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">估值：</text>
+            <text class="value price">¥{{ selectedItem.value }}</text>
+          </view>
+          <view class="info-row" wx:if="{{ selectedItem.count > 1 }}">
+            <text class="label">数量：</text>
+            <text class="value">{{ selectedItem.count }}个</text>
+          </view>
+        </view>
+        
+        <view class="detail-actions">
+          <van-button type="default" size="large" bind:click="shareItem">
+            分享
+          </van-button>
+          <van-button type="primary" size="large" bind:click="sellItem">
+            出售
+          </van-button>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+</view>
